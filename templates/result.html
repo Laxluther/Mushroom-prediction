@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-cover bg-center" style="background-image: url('{{ url_for('static', filename='images/background.png') }}');">
+    <div class="container mx-auto p-8">
+        
+        <!-- Header Section -->
+        <div class="flex justify-center items-center mt-8 relative">
+            <!-- White strip behind the text -->
+            <div class="absolute inset-0 flex justify-center items-center">
+                <div class="bg-white w-full h-24"></div>
+            </div>
+        
+            <!-- Text on top of the white strip -->
+            <h1 class="text-5xl font-extrabold text-red-600 z-10">Here’s What I Found</h1>
+        
+            <!-- Image overlapping the white strip -->
+            <img src="{{ url_for('static', filename='images/speaking_mush.png') }}" alt="Mushroom Speaking" class="h-64 ml-4 z-20">
+        </div>
+        
+        
+        
+        <!-- Uploaded Image Section -->
+        <div class="flex justify-center mt-8">
+            <div class="border-4 border-white p-4 rounded-lg shadow-lg bg-white">
+                <img src="{{ url_for('static', filename=image) }}" alt="Uploaded Image" class="max-w-xs mx-auto">
+            </div>
+        </div>
+
+        <!-- Predicted Class Section -->
+        <div class="flex justify-center mt-8">
+            <div class="border-4 border-green-500 p-4 rounded-lg shadow-lg bg-green-100 w-1/2 text-center">
+                <p class="text-2xl font-bold text-green-800">Predicted Class: {{ predicted_class }}</p>
+            </div>
+        </div>
+
+        <!-- Details Display Section -->
+        <div class="flex justify-center mt-4">
+            <div class="border-4 border-blue-500 p-4 rounded-lg shadow-lg bg-blue-100 w-1/2 text-center">
+                <p class="text-xl text-blue-800"><strong>Details:</strong> {{ detailed_info }}</p>
+            </div>
+        </div>
+
+        <!-- Accuracy Display Section -->
+        <div class="flex justify-center mt-4">
+            <div class="border-4 border-yellow-500 p-4 rounded-lg shadow-lg bg-yellow-100 w-1/2 text-center">
+                <p class="text-xl text-yellow-800"><strong>Accuracy:</strong> {{ accuracy }}%</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

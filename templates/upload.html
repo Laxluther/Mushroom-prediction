@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload Mushroom Image</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <style>
+        input[type="file"] {
+            display: none;
+            /* Hide the default file input */
+        }
+
+        .upload-button {
+            width: 100%;
+            /* Full width */
+        }
+
+        .image-container {
+            display: none;
+            /* Initially hidden */
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .image-container button {
+            margin-top: 10px;
+            padding: 8px 16px;
+            background-color: #ff4d4d;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .image-container button:hover {
+            background-color: #e60000;
+        }
+
+        .header-strip {
+            background-color: white;
+            padding: 20px;
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .header-image {
+            position: absolute;
+            left: 0;
+            /* Adjust if needed */
+            top: -30px;
+            /* Adjust for overlap effect */
+            max-width: 150px;
+            /* Adjust size as needed */
+            height: auto;
+            z-index: 0;
+        }
+
+        .header-text {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+
+<body class="w-full h-screen bg-cover bg-center"
+    style="background-image: url('{{ url_for('static', filename='images/background.png') }}');">
+    <div class="container mx-auto h-full flex flex-col justify-center items-center">
+        <!-- Header Strip with Image Overlap -->
+        <div class="header-strip">
+            <img src="{{ url_for('static', filename='images/mushroom-h.png') }}" alt="Mushroom House"
+                class="header-image" style="max-width: 200px" />
+            <!-- Increased size -->
+            <div class="header-text">
+                <h1 class="text-6xl font-bold text-brown">
+                    Welcome to House of Mushroom
+                </h1>
+            </div>
+        </div>
+
+        <div class="w-full flex flex-col items-center justify-center mt-40">
+            <!-- Added margin-top to push content down -->
+            <div class="w-full max-w-md">
+                <!-- Upload Section -->
+                <h2 class="text-2xl font-extrabold mb-4 text-black text-center">
+                    Upload a Mushroom Image
+                </h2>
+                <form action="/predict" method="post" enctype="multipart/form-data">
+                    <div class="flex flex-col items-center w-full">
+                        <label for="multi-upload-input"
+                            class="upload-button inline-flex items-center px-4 py-2 bg-gray-600 border border-gray-600 rounded-md font-semibold cursor-pointer text-sm text-white tracking-widest hover:bg-gray-500 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition">
+                            Click to browse
+                        </label>
+                        <input type="file" id="multi-upload-input" name="file" accept="image/*" required />
+
+                        <!-- Image Container -->
+                        <div id="image-container" class="image-container">
+                            <img id="uploaded-image" src="#" alt="Uploaded Image" />
+                            <button type="button" id="delete-button">Delete Image</button>
+                        </div>
+
+                        <!-- Predict Button -->
+                        <button type="submit"
+                            class="mt-4 inline-flex items-center px-6 py-2 bg-green-600 border border-green-600 rounded font-semibold cursor-pointer text-lg text-white tracking-widest hover:bg-green-500 active:bg-green-700 focus:outline-none focus:border-green-700 focus:ring focus:ring-green-300 transition">
+                            Predict
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <img src="{{ url_for('static', filename='images/mush.png') }}" alt="Mushroom Pointer" class="h-64 mt-8" />
+    </div>
+    <script>
+        // JavaScript to handle file input and display image
+        document
+            .getElementById("multi-upload-input")
+            .addEventListener("change", function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const imageContainer = document.getElementById("image-container");
+                        const uploadedImage = document.getElementById("uploaded-image");
+                        uploadedImage.src = e.target.result;
+                        imageContainer.style.display = "block";
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+        // JavaScript to handle image deletion
+        document
+            .getElementById("delete-button")
+            .addEventListener("click", function () {
+                const imageContainer = document.getElementById("image-container");
+                const uploadedImage = document.getElementById("uploaded-image");
+                uploadedImage.src = "#";
+                imageContainer.style.display = "none";
+                document.getElementById("multi-upload-input").value = ""; // Clear the file input
+            });
+    </script>
+</body>
+
+</html>
